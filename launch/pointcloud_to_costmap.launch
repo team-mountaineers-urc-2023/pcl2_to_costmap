@@ -1,0 +1,41 @@
+<launch>
+	<arg name="pointcloud_topic" default="/lidar"/>
+	<arg name="costmap_topic" default="/obav_costmap"/>
+
+	<arg name="width" default="5"/>
+	<arg name="height" default="5"/>
+	<arg name="resolution" default="0.2"/>
+	<arg name="lidar_height" default="0.3"/>
+	<arg name="driveable_slope" default="0.3"/>
+	<arg name="frame_id" default="lidar_link"/>
+	<arg name="use_nearest_neighbor_approximation" default="false"/>
+
+	<arg name="clear_zone" default="[[-1, -1], [-1, 1], [1, 1], [1, -1]]"/>
+	<arg name="max_point_height" default="5"/>
+
+	<arg name="transform_lidar_to_earth" default="true"/>
+	<!-- <arg name="lidar_tf_target_frame" default="base_link"/> Need to figure out correct value for this -->
+	<!-- <arg name="lidar_tf_source_frame" default="lidar_link"/> I think this is correct, could be the reverse -->
+	<!-- <arg name="lidar_tf_lookup_time" default="0"/> -->
+
+	<node pkg="pcl2_to_costmap" name="pointcloud_to_costmap"
+	type="pointcloud_to_costmap.py" output="screen" respawn="false">
+		<param name="pointcloud_topic" value="$(arg pointcloud_topic)"/>
+		<param name="costmap_topic" value="$(arg costmap_topic)"/>
+
+		<param name="width" value="$(arg width)"/>
+		<param name="height" value="$(arg height)"/>
+		<param name="resolution" value="$(arg resolution)"/>
+		<param name="lidar_height" value="$(arg lidar_height)"/>
+		<param name="driveable_slope" value="$(arg driveable_slope)"/>
+		<param name="frame_id" value="$(arg frame_id)"/>
+		<param name="use_nearest_neighbor_approximation" value="$(arg use_nearest_neighbor_approximation)"/>
+		<rosparam param="clear_zone" subst_value="True">$(arg clear_zone)</rosparam>
+		<param name="max_point_height" value="$(arg max_point_height)"/>
+		<param name="transform_lidar_to_earth" value="$(arg transform_lidar_to_earth)"/>
+		<!-- <param name="lidar_tf_target_frame" value="$(arg lidar_tf_target_frame)"/>
+		<param name="lidar_tf_source_frame" value="$(arg lidar_tf_source_frame)"/>
+		<param name="lidar_tf_lookup_time" value="$(arg lidar_tf_lookup_time)"/> -->
+
+	</node>
+</launch>
